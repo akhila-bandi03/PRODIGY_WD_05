@@ -1,0 +1,481 @@
+/* ==========================================================================
+   Chrono Stopwatch - Design System & Custom Style Rules
+   ========================================================================== */
+
+/* --- Custom Variables & Theme Tokens --- */
+:root {
+    --bg-primary: #070a13;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.4);
+    
+    /* Neon Color Accents */
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-success: #10b981;
+    --accent-danger: #ef4444;
+    --accent-warning: #f59e0b;
+    
+    /* Glassmorphism Settings */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-focus: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+    --glass-blur: 24px;
+    
+    /* Border Radius Presets */
+    --radius-lg: 32px;
+    --radius-md: 20px;
+    --radius-sm: 12px;
+    
+    /* Transitions */
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Base & Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* --- Webpage Scrollbar --- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Background Ambient Glow Blobs --- */
+.ambient-glow {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    max-width: 600px;
+    max-height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    z-index: -1;
+    opacity: 0.15;
+    pointer-events: none;
+    animation: pulseGlow 15s ease-in-out infinite alternate;
+}
+
+.bg-glow-1 {
+    background: radial-gradient(circle, var(--accent-purple) 0%, transparent 80%);
+    top: -10%;
+    left: -10%;
+}
+
+.bg-glow-2 {
+    background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 80%);
+    bottom: -10%;
+    right: -10%;
+    animation-delay: -5s;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.15) translate(5%, 5%); }
+}
+
+/* --- Main Layout Wrapper --- */
+.app-container {
+    width: 100%;
+    max-width: 440px;
+    padding: 1.5rem;
+    z-index: 1;
+}
+
+/* --- Header Section --- */
+.app-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+}
+
+.brand-icon {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3));
+}
+
+.brand-text {
+    background: linear-gradient(135deg, #ffffff 50%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tagline {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* --- Central Card --- */
+.stopwatch-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem 2rem 2rem;
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stopwatch-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* --- Circular Timer Section --- */
+.timer-display-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.2rem;
+}
+
+.progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg); /* Start progress from top center */
+}
+
+.progress-ring-fill {
+    stroke-dasharray: 816.8; /* Circumference for r=130: 2 * PI * 130 */
+    stroke-dashoffset: 816.8; /* Initially empty */
+    transition: stroke-dashoffset 0.05s linear; /* Smooth transition */
+}
+
+/* Glower overlay when timer is running */
+.stopwatch-card.running .progress-ring-fill {
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.4));
+}
+
+.timer-digits-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+}
+
+.time-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+}
+
+.time-main span {
+    display: inline-block;
+    min-width: 50px;
+    text-align: center;
+}
+
+.time-main .colon {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent-cyan);
+    min-width: unset;
+    margin: 0 1px;
+    animation: blinkColon 2s infinite steps(1);
+    opacity: 0.8;
+}
+
+.stopwatch-card.running .time-main .colon {
+    animation: none; /* Keep solid cyan when running */
+    opacity: 1;
+}
+
+@keyframes blinkColon {
+    50% { opacity: 0.15; }
+}
+
+.time-ms {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+}
+
+/* stopwatch active text glow */
+.stopwatch-card.running .time-main {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+/* --- Control Buttons Panel --- */
+.controls-panel {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    flex: 1;
+    height: 52px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Primary Button (Start / Pause) */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+    border: none;
+    box-shadow: 0 8px 24px -6px rgba(139, 92, 246, 0.4);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 30px -4px rgba(6, 182, 212, 0.6);
+}
+
+.btn-primary.paused {
+    background: linear-gradient(135deg, var(--accent-warning), var(--accent-danger));
+    box-shadow: 0 8px 24px -6px rgba(245, 158, 11, 0.4);
+}
+
+/* Secondary Button (Lap) */
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--glass-border-focus);
+}
+
+/* Danger Button (Reset) */
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: var(--accent-danger);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: var(--accent-danger);
+}
+
+/* --- Laps Section --- */
+.laps-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.laps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.9rem;
+    padding: 0 4px;
+}
+
+.laps-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+}
+
+.clear-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-danger);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+}
+
+.clear-btn:hover {
+    opacity: 1;
+}
+
+.clear-btn:disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.laps-list-wrapper {
+    height: 180px;
+    width: 100%;
+    overflow-y: auto;
+    border-radius: var(--radius-sm);
+    background: rgba(0,0,0,0.15);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 6px;
+}
+
+.laps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Empty Lap State */
+.empty-laps-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 166px;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    opacity: 0.5;
+}
+
+.empty-laps-state p {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Individual Lap Row */
+.lap-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    animation: slideInLap 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInLap {
+    0% { transform: translateY(-10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.lap-number {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.lap-split {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.lap-cumulative {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Highlight tags for fastest and slowest laps */
+.lap-row.fastest {
+    background: rgba(16, 185, 129, 0.04);
+    border-color: rgba(16, 185, 129, 0.15);
+}
+
+.lap-row.fastest .lap-number {
+    color: var(--accent-success);
+}
+.lap-row.fastest .lap-split {
+    color: var(--accent-success);
+    text-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+}
+
+.lap-row.slowest {
+    background: rgba(239, 68, 68, 0.04);
+    border-color: rgba(239, 68, 68, 0.15);
+}
+
+.lap-row.slowest .lap-number {
+    color: var(--accent-danger);
+}
+.lap-row.slowest .lap-split {
+    color: var(--accent-danger);
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
+}

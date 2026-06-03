@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrono | Premium Stopwatch</title>
+    <meta name="description" content="A high-accuracy digital stopwatch web application with lap timing, split calculations, and beautiful modern animations.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Controls Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Space Background Gradients -->
+    <div class="ambient-glow bg-glow-1"></div>
+    <div class="ambient-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <span class="brand-icon"><i class="fa-solid fa-stopwatch"></i></span>
+                <span class="brand-text">CHRONO</span>
+            </div>
+            <div class="tagline">Precision Lap Timer</div>
+        </header>
+
+        <!-- Main Display Panel -->
+        <main class="stopwatch-card">
+            
+            <!-- Circular Progress & Time Display -->
+            <div class="timer-display-container">
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-track" stroke="rgba(255, 255, 255, 0.05)" stroke-width="6" fill="transparent" r="130" cx="140" cy="140"/>
+                    <circle class="progress-ring-fill" id="progress-fill" stroke="url(#gradient-accent)" stroke-width="6" fill="transparent" r="130" cx="140" cy="140" stroke-linecap="round"/>
+                    
+                    <!-- Gradient Definition for Stroke -->
+                    <defs>
+                        <linearGradient id="gradient-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8b5cf6" />
+                            <stop offset="100%" stop-color="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div class="timer-digits-box">
+                    <div class="time-main">
+                        <span id="display-hours">00</span><span class="colon">:</span><span id="display-minutes">00</span><span class="colon">:</span><span id="display-seconds">00</span>
+                    </div>
+                    <div class="time-ms" id="display-ms">.00</div>
+                </div>
+            </div>
+
+            <!-- Stopwatch Control Buttons -->
+            <div class="controls-panel">
+                <button id="lap-btn" class="btn btn-secondary" title="Record lap time" disabled>
+                    <i class="fa-solid fa-flag"></i> Lap
+                </button>
+                
+                <button id="start-btn" class="btn btn-primary" title="Start stopwatch">
+                    <i class="fa-solid fa-play"></i> Start
+                </button>
+                
+                <button id="reset-btn" class="btn btn-danger" title="Reset stopwatch" disabled>
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+                </button>
+            </div>
+
+            <!-- Lap Times List Section -->
+            <section class="laps-section" id="laps-section">
+                <div class="laps-header">
+                    <h3>Lap Records</h3>
+                    <button id="clear-btn" class="clear-btn" title="Clear all lap records" disabled>Clear All</button>
+                </div>
+                <div class="laps-list-wrapper">
+                    <div class="laps-list" id="laps-list">
+                        <div class="empty-laps-state" id="empty-state">
+                            <i class="fa-solid fa-stopwatch-20 empty-icon"></i>
+                            <p>No laps recorded yet</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
