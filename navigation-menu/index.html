@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroNav | Interactive Navigation Menu</title>
+    <meta name="description" content="A premium interactive navigation menu with scroll-based styling transitions, active section highlighting, and mobile responsiveness.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Ambient Floating Gradients -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Fixed Header & Navigation -->
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <a href="#home" class="brand" id="brand-logo">
+                <span class="brand-icon"><i class="fa-solid fa-cube"></i></span>
+                <span class="brand-text">AEROLAB</span>
+            </a>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation Menu">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+                <span class="bar bar-3"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="navbar" id="navbar">
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#services" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#portfolio" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sections (Landing Page) -->
+    
+    <!-- Section 1: Home (Hero) -->
+    <section id="home" class="section-container hero-section">
+        <div class="hero-content">
+            <div class="badge">Future is Now</div>
+            <h1>Empowering Digital Ideas through Design</h1>
+            <p>Creating highly interactive user interfaces, premium web designs, and cutting-edge visual experiences for modern brands.</p>
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-primary">Our Services</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Services -->
+    <section id="services" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Core Expertise</h2>
+            <p class="section-subtitle">We design and construct premium solutions using cutting-edge client technologies.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="card-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+                <h3>UI/UX Design</h3>
+                <p>Translating user requirements into breathtaking visual layouts with perfect responsive details.</p>
+            </div>
+            <div class="service-card">
+                <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+                <h3>Web Development</h3>
+                <p>Clean semantic code structured for fast performance, high security, and perfect SEO indexing.</p>
+            </div>
+            <div class="service-card">
+                <div class="card-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <h3>Motion Design</h3>
+                <p>Applying smooth transitions, hover effects, and micro-animations to enhance visual storytelling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Portfolio -->
+    <section id="portfolio" class="section-container alternative-bg">
+        <div class="section-header">
+            <h2 class="section-title">Selected Projects</h2>
+            <p class="section-subtitle">A showcase of our recent works built with attention to design aesthetics.</p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <i class="fa-solid fa-cloud-moon art-placeholder"></i>
+                </div>
+                <div class="portfolio-meta">
+                    <span class="item-cat">Web Dashboard</span>
+                    <h3>Aero Weather App</h3>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <i class="fa-solid fa-stopwatch art-placeholder"></i>
+                </div>
+                <div class="portfolio-meta">
+                    <span class="item-cat">Utility Web App</span>
+                    <h3>Chrono Stopwatch</h3>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <i class="fa-solid fa-wand-magic-sparkles art-placeholder"></i>
+                </div>
+                <div class="portfolio-meta">
+                    <span class="item-cat">Design Concept</span>
+                    <h3>Neumorphic Lab</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: About -->
+    <section id="about" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">About the Lab</h2>
+            <p class="section-subtitle">We believe in minimal structures, frosted interfaces, and dynamic interactivity.</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Design Philosophy</h3>
+                <p>Our focus is to build web applications that not only solve users' problems but also amaze them visually. By using curated gradient scales, robust layouts, and subtle animations, we bring digital projects to life.</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-num">99%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">24h</span>
+                        <span class="stat-label">Response time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Contact -->
+    <section id="contact" class="section-container alternative-bg">
+        <div class="section-header">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-subtitle">Tell us about your project requirements and let's craft something special.</p>
+        </div>
+        <div class="contact-card-wrapper">
+            <form class="contact-form" id="contact-form" autocomplete="off" onsubmit="event.preventDefault();">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="msg">Your Message</label>
+                    <textarea id="msg" placeholder="Hello! I would like to ask about..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>&copy; 2026 AeroLab Digital Agency. All rights reserved. Designed for Prodigy InfoTech.</p>
+    </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
