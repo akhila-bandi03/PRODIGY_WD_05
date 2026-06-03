@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero | Dynamic Weather Dashboard</title>
+    <meta name="description" content="Access live weather conditions, hourly forecasts, and 7-day outlooks for any city using geolocation and auto-geocoded lookup.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Weather & Navigation Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="weather-sunny">
+
+    <!-- Ambient Animated Weather Overlays -->
+    <div class="weather-bg-overlay">
+        <!-- Sunrays for Sunny weather -->
+        <div class="sunny-rays"></div>
+        <!-- Clouds for Cloudy weather -->
+        <div class="cloudy-container">
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+        </div>
+        <!-- Rain/Thunder elements -->
+        <div class="rain-container"></div>
+        <div class="thunder-flash"></div>
+        <!-- Snow elements -->
+        <div class="snow-container"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Main Search and Top Controls -->
+        <header class="app-header">
+            <div class="brand">
+                <span class="brand-icon"><i class="fa-solid fa-cloud-sun"></i></span>
+                <span class="brand-text">AERO</span>
+            </div>
+            
+            <div class="controls-wrapper">
+                <form class="search-form" id="search-form" autocomplete="off">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Search city..." aria-label="Search city name">
+                        <button type="button" id="geo-btn" class="geo-btn" title="Use my current location">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </button>
+                    </div>
+                    <!-- Auto-suggestions Dropdown -->
+                    <div class="suggestions-dropdown" id="suggestions-dropdown"></div>
+                </form>
+
+                <!-- Units Toggle Slider -->
+                <div class="unit-toggle-container">
+                    <span class="unit-label">°C</span>
+                    <label class="switch">
+                        <input type="checkbox" id="unit-checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="unit-label">°F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Error Notification Panel -->
+        <div class="error-panel" id="error-panel">
+            <span class="error-icon"><i class="fa-solid fa-circle-exclamation"></i></span>
+            <span class="error-message" id="error-message">City not found. Please try again.</span>
+            <button class="error-close-btn" id="error-close-btn">&times;</button>
+        </div>
+
+        <!-- Main Loading Skeleton UI -->
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="skeleton-hero"></div>
+            <div class="skeleton-grid">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+
+        <!-- Main Weather Dashboard Section -->
+        <main class="dashboard-grid" id="dashboard-content">
+            
+            <!-- Left Panel: Hero and Daily Highlights -->
+            <div class="left-panel">
+                
+                <!-- Main Hero Current Weather Card -->
+                <section class="hero-weather-card">
+                    <div class="hero-header">
+                        <div class="location-details">
+                            <h1 id="city-name">--</h1>
+                            <p id="current-date">--</p>
+                        </div>
+                        <div class="weather-badge" id="weather-description-badge">Clear</div>
+                    </div>
+                    <div class="hero-body">
+                        <div class="temp-display">
+                            <span class="temperature" id="current-temp">0</span>
+                            <span class="temp-degree" id="temp-degree-symbol">°C</span>
+                        </div>
+                        <div class="weather-art">
+                            <i id="weather-main-icon" class="fa-solid fa-sun weather-icon-pulse"></i>
+                        </div>
+                    </div>
+                    <div class="hero-footer">
+                        <div class="meta-item">
+                            <span class="meta-icon"><i class="fa-solid fa-temperature-half"></i></span>
+                            <span class="meta-text">Feels Like <strong id="feels-like-temp">0°</strong></span>
+                        </div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item">
+                            <span class="meta-icon"><i class="fa-solid fa-arrows-up-down"></i></span>
+                            <span class="meta-text">H: <strong id="temp-max">0°</strong> L: <strong id="temp-min">0°</strong></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 24-Hour Timeline -->
+                <section class="hourly-forecast-section">
+                    <h2 class="section-title">Hourly Forecast</h2>
+                    <div class="hourly-scroll-container" id="hourly-scroll-container">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Detailed Metrics Highlights Grid -->
+                <section class="highlights-section">
+                    <h2 class="section-title">Today's Highlights</h2>
+                    <div class="highlights-grid">
+                        
+                        <!-- Wind Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">Wind Status</h3>
+                            <div class="card-content">
+                                <div class="wind-icon-box">
+                                    <i class="fa-solid fa-wind"></i>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="wind-speed">0</span>
+                                    <span class="unit" id="wind-unit">km/h</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="wind-dir">Direction: --</span>
+                            </div>
+                        </div>
+
+                        <!-- Humidity Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">Humidity</h3>
+                            <div class="card-content">
+                                <div class="humidity-gauge">
+                                    <div class="gauge-fill" id="humidity-gauge-fill"></div>
+                                    <i class="fa-solid fa-droplet gauge-icon"></i>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="humidity-value">0</span>
+                                    <span class="unit">%</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="humidity-status">Normal</span>
+                            </div>
+                        </div>
+
+                        <!-- UV Index Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">UV Index</h3>
+                            <div class="card-content">
+                                <div class="uv-index-bar">
+                                    <div class="uv-marker" id="uv-marker"></div>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="uv-value">0</span>
+                                    <span class="unit" id="uv-status">Low</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="uv-advice">No protection needed</span>
+                            </div>
+                        </div>
+
+                        <!-- Humidity/Rain/Precipitation Probability Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">Precipitation</h3>
+                            <div class="card-content">
+                                <div class="precip-icon-box">
+                                    <i class="fa-solid fa-cloud-showers-water"></i>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="precip-prob">0</span>
+                                    <span class="unit">%</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="precip-info">Probability of rain</span>
+                            </div>
+                        </div>
+
+                        <!-- Pressure Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">Air Pressure</h3>
+                            <div class="card-content font-reduced">
+                                <div class="pressure-icon-box">
+                                    <i class="fa-solid fa-gauge-simple-high"></i>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="pressure-value">0</span>
+                                    <span class="unit">hPa</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="pressure-status">Standard</span>
+                            </div>
+                        </div>
+
+                        <!-- Visibility Card -->
+                        <div class="highlight-card">
+                            <h3 class="card-title">Visibility</h3>
+                            <div class="card-content">
+                                <div class="visibility-icon-box">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                                <div class="value-block">
+                                    <span class="value" id="visibility-value">0</span>
+                                    <span class="unit">km</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="footer-label" id="visibility-status">Clear view</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Panel: 7-Day Forecast -->
+            <div class="right-panel">
+                <section class="forecast-section">
+                    <h2 class="section-title">7-Day Forecast</h2>
+                    <div class="forecast-list" id="forecast-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Execution -->
+    <script src="script.js"></script>
+</body>
+</html>
